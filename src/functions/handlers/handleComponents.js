@@ -17,6 +17,12 @@ module.exports = (client) => {
             buttons.set(button.data.name, button);
           }
           break;
+        case "music":
+          for (const file of componentFiles) {
+            const button = require(`../../components/${folder}/${file}`);
+            buttons.set(button.data.name, button);
+          }
+          break;
       }
     }
   };

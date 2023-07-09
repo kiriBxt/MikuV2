@@ -8,7 +8,7 @@ module.exports = {
     .addStringOption((option) =>
       option.setName("input").setDescription("User input").setRequired(true)
     ),
-  async execute(interaction, client) {
+  async execute(interaction) {
     const string = interaction.options.getString("input");
     var fortunes = [
       "Ja!",

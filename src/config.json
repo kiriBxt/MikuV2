@@ -1,0 +1,8 @@
+{
+    "selfDeaf": true,
+    "volume": 20,
+    "leaveOnEmpty": true,
+    "leaveOnEmptyCooldown": 300000,
+    "leaveOnEnd": true,
+    "leaveOnEndCooldown": 300000
+}

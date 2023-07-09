@@ -2,6 +2,7 @@ const fs = require("fs");
 
 module.exports = (client) => {
   client.handleEvents = async () => {
+    const { player } = client;
     const eventFolders = fs.readdirSync(`./src/events`);
     for (const folder of eventFolders) {
       const eventFiles = fs
@@ -19,6 +20,20 @@ module.exports = (client) => {
               client.on(event.name, (...args) =>
                 event.execute(...args, client)
               );
+          }
+          break;
+        case "player":
+          for (const file of eventFiles) {
+            const event = require(`../../events/${folder}/${file}`);
+            if (event.once)
+              player.events.once(event.name, (...args) =>
+                event.execute(...args, client)
+              );
+            else {
+              player.events.on(event.name, (...args) =>
+                event.execute(...args, client)
+              );
+            }
           }
           break;
       }

@@ -13,6 +13,15 @@ client.cooldowns = new Collection();
 client.modals = new Collection();
 client.commandArray = [];
 
+const { Player } = require("discord-player");
+client.player = new Player(client, {
+  ytdlOptions: {
+    filter: "audioonly",
+    quality: "highestaudio",
+    highWaterMark: 1 << 27,
+  },
+});
+
 const functionFolders = fs.readdirSync("./src/functions");
 for (const folder of functionFolders) {
   const functionsFiles = fs

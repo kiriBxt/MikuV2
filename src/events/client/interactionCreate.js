@@ -41,7 +41,7 @@ module.exports = {
         console.error(error);
         await interaction.reply({
           content: `something went wrong...chatInputCommand`,
-          ephermal: true,
+          ephemeral: true,
         });
       }
     } else if (interaction.isButton()) {
