@@ -24,8 +24,6 @@ module.exports = {
         })
       );
 
-    //client.application.commands.set([]);
-
     await interaction.reply({
       embeds: [embed],
     });
