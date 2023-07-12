@@ -38,15 +38,33 @@ module.exports = {
     ),
   async execute(interaction) {
     var data = {};
+    let checked = [];
+    let dupe = false;
+
+    let selecRoles = [];
+    selecRoles.push(
+      interaction.options.getRole("role1").id,
+      interaction.options.getRole("role2")?.id,
+      interaction.options.getRole("role3")?.id,
+      interaction.options.getRole("role4")?.id,
+      interaction.options.getRole("role5")?.id
+    );
+
+    selecRoles.forEach((role) => {
+      if (role) {
+        if (checked.some((copy) => copy == role)) {
+          dupe = true;
+        }
+        checked.push(role);
+      }
+    });
+    if (dupe) {
+      return await interaction.reply("Keine Rollen doppelt auswählen!");
+    }
+
     data.verifyRoles = [];
     data.verifyRoles.push({
-      roles: [
-        interaction.options.getRole("role1").id,
-        interaction.options.getRole("role2")?.id,
-        interaction.options.getRole("role3")?.id,
-        interaction.options.getRole("role4")?.id,
-        interaction.options.getRole("role5")?.id,
-      ],
+      roles: selecRoles,
     });
     fs.writeFile(
       `./src/guildData/${interaction.guild.id}.json`,
@@ -55,6 +73,7 @@ module.exports = {
         if (err) throw err;
       }
     );
+
     await interaction.reply("success");
   },
 };

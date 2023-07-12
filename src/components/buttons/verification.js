@@ -6,41 +6,38 @@ module.exports = {
     name: `verify`,
   },
   async execute(interaction) {
-    let error = "";
     const roles = interaction.member._roles;
+    await interaction.deferReply({ content: "", ephemeral: true });
 
     fs.readFile(
       `./src/guildData/${interaction.guild.id}.json`,
       "utf8",
-      (err, jsonString) => {
+      async (err, jsonString) => {
         if (err) {
-          return interaction.reply("Bitte benutze /setverification");
+          return interaction.editReply("Bitte benutze /setverification");
         }
         const data = JSON.parse(jsonString);
         const verRoles = data.verifyRoles[0].roles;
 
         if (verRoles[0] == null) {
-          return interaction.reply("Bitte benutze /setverification");
+          return interaction.editReply("Bitte benutze /setverification");
         }
 
         if (roles.includes(verRoles[0]) === true) {
-          return interaction.reply("bereits verifiziert");
+          return interaction.editReply("bereits verifiziert");
         }
 
         verRoles.forEach(async (roleId) => {
-          try {
-            if (roleId) {
+          if (roleId) {
+            try {
               await interaction.member.roles.add(roleId);
+            } catch (e) {
+              return interaction.editReply(e.rawError.message);
             }
-          } catch (e) {
-            error +=
-              e.rawError.message +
-              " for role " +
-              interaction.guild.roles.cache.get(roleId).name +
-              "\n";
           }
-          if (error) return interaction.reply(error);
         });
+
+        await interaction.editReply("success");
       }
     );
   },
