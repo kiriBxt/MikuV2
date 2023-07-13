@@ -37,7 +37,7 @@ module.exports = {
           }
         });
 
-        await interaction.editReply("success");
+        await interaction.editReply("Du bist nun verifiziert");
       }
     );
   },
