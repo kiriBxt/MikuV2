@@ -15,7 +15,7 @@ module.exports = {
       return await interaction.reply("Nichts in der queue");
     }
     const volume = interaction.options.getString("volume");
-    if (volume >= 101 || volume <= 2 || isNaN(volume)) {
+    if (volume <= 100 || volume >= 1 || isNaN(volume)) {
       return await interaction.reply("Eingabe ungültig!");
     }
     queue.node.setVolume(parseInt(volume));
