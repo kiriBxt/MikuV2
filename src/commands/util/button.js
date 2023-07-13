@@ -80,7 +80,7 @@ module.exports = {
               new ButtonBuilder()
                 .setCustomId(role)
                 .setLabel(interaction.guild.roles.cache.get(role).name)
-                .setStyle(ButtonStyle.Primary)
+                .setStyle(ButtonStyle.Secondary)
             );
           }
           count++;
@@ -90,7 +90,7 @@ module.exports = {
               new ButtonBuilder()
                 .setCustomId(role)
                 .setLabel(interaction.guild.roles.cache.get(role).name)
-                .setStyle(ButtonStyle.Primary)
+                .setStyle(ButtonStyle.Secondary)
             );
           }
           count++;
@@ -100,7 +100,7 @@ module.exports = {
               new ButtonBuilder()
                 .setCustomId(role)
                 .setLabel(interaction.guild.roles.cache.get(role).name)
-                .setStyle(ButtonStyle.Primary)
+                .setStyle(ButtonStyle.Secondary)
             );
           }
           count++;
@@ -109,7 +109,7 @@ module.exports = {
             new ButtonBuilder()
               .setCustomId(role)
               .setLabel(interaction.guild.roles.cache.get(role).name)
-              .setStyle(ButtonStyle.Primary)
+              .setStyle(ButtonStyle.Secondary)
           ),
             count++;
         } else if (count <= 25 && count > 20) {
@@ -118,7 +118,7 @@ module.exports = {
               new ButtonBuilder()
                 .setCustomId(role)
                 .setLabel(interaction.guild.roles.cache.get(role).name)
-                .setStyle(ButtonStyle.Primary)
+                .setStyle(ButtonStyle.Secondary)
             );
           }
           count++;
