@@ -24,7 +24,7 @@ module.exports = {
         )
     ),
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ content: "searching...", ephemeral: true });
     const voiceChannel = interaction.member.voice.channel;
     if (!voiceChannel)
       return interaction.editReply("Du musst in einem Voicechannel sein!");
