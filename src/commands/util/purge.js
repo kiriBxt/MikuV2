@@ -19,7 +19,10 @@ module.exports = {
     try {
       await interaction.channel.bulkDelete(number);
     } catch (e) {
-      return interaction.reply({ content: `Error: ${e.rawError.message}` });
+      return interaction.reply({
+        content: `Error: ${e.rawError.message}`,
+        ephemeral: true,
+      });
     }
     await interaction.reply({
       content: `Es werden ${number} Nachrichten in diesem Channel gelöscht!`,
