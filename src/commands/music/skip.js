@@ -5,7 +5,7 @@ module.exports = {
   cooldown: 1,
   data: new SlashCommandBuilder()
     .setName("skip")
-    .setDescription("return my ping"),
+    .setDescription("Überspringt jetziges Lied"),
   async execute(interaction) {
     const queue = useQueue(interaction.guild.id);
     if (!queue) {
