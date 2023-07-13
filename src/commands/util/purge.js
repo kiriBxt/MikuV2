@@ -16,7 +16,11 @@ module.exports = {
     ),
   async execute(interaction) {
     let number = interaction.options.getInteger("amount");
-    await interaction.channel.bulkDelete(number);
+    try {
+      await interaction.channel.bulkDelete(number);
+    } catch (e) {
+      return interaction.reply({ content: `Error: ${e.rawError.message}` });
+    }
     await interaction.reply({
       content: `Es werden ${number} Nachrichten in diesem Channel gelöscht!`,
       ephemeral: true,
