@@ -1,3 +1,4 @@
 node_modules*
 guildData*
 .env
+src/commands/util/enhance.jss

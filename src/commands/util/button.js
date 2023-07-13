@@ -4,6 +4,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
   PermissionFlagsBits,
+  EmbedBuilder,
 } = require("discord.js");
 
 module.exports = {
@@ -14,21 +15,29 @@ module.exports = {
       "fügt einen button an die zuletzt gesendete nachricht im channel"
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName("rollen")
-        .setDescription(
-          "Hier werden Button rollen generiert. 25 Buttons möglich!"
-        )
-        .addStringOption((option) =>
-          option
-            .setName("rollenids")
-            .setDescription("Beispiel: 43534543534,34534534543,3453453454,...")
-            .setRequired(true)
-        )
+    .addStringOption((option) =>
+      option
+        .setName("title")
+        .setDescription("Hier kommt der Embedtitel hin")
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("desc")
+        .setDescription("Hier kommt der Beschreibung hin")
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("rollenids")
+        .setDescription("Hier kommen die RollenIds hin")
+        .setRequired(true)
     ),
+
   async execute(interaction) {
     let input = interaction.options.getString("rollenids");
+    let title = interaction.options.getString("title");
+    let desc = interaction.options.getString("desc");
     input.replace(/[^0-9]/g, "");
     let roles = input.split(",");
     if (roles.length > 25) {
@@ -47,20 +56,6 @@ module.exports = {
     if (dupe) {
       return await interaction.reply("Keine Rollen doppelt auswählen!");
     }
-    let messageId;
-    let messageEmbed;
-    let messageContent;
-    const channel = interaction.channel;
-    const messages = await channel.messages.fetch({ limit: 1 });
-    const msg = messages.filter(
-      (message) => (
-        (messageContent = message.content),
-        (messageEmbed = message.embeds[0]),
-        (messageId = message.id)
-      )
-    );
-
-    await channel.bulkDelete(1);
 
     await interaction.deferReply();
 
@@ -139,6 +134,10 @@ module.exports = {
     }
 
     let amount = Math.ceil(roles.length / 5);
+
+    const messageEmbed = new EmbedBuilder()
+      .setTitle(title)
+      .setDescription(desc);
 
     if (!messageEmbed) {
       return interaction.editReply({
