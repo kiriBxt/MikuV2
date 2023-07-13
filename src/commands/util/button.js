@@ -75,29 +75,35 @@ module.exports = {
     try {
       roles.forEach((role) => {
         if (count <= 5) {
-          row0.components.push(
-            new ButtonBuilder()
-              .setCustomId(role)
-              .setLabel(interaction.guild.roles.cache.get(role).name)
-              .setStyle(ButtonStyle.Primary)
-          ),
-            count++;
+          if (role) {
+            row0.components.push(
+              new ButtonBuilder()
+                .setCustomId(role)
+                .setLabel(interaction.guild.roles.cache.get(role).name)
+                .setStyle(ButtonStyle.Primary)
+            );
+          }
+          count++;
         } else if (count <= 10 && count > 5) {
-          row1.components.push(
-            new ButtonBuilder()
-              .setCustomId(role)
-              .setLabel(interaction.guild.roles.cache.get(role).name)
-              .setStyle(ButtonStyle.Primary)
-          ),
-            count++;
+          if (role) {
+            row1.components.push(
+              new ButtonBuilder()
+                .setCustomId(role)
+                .setLabel(interaction.guild.roles.cache.get(role).name)
+                .setStyle(ButtonStyle.Primary)
+            );
+          }
+          count++;
         } else if (count <= 15 && count > 10) {
-          row2.components.push(
-            new ButtonBuilder()
-              .setCustomId(role)
-              .setLabel(interaction.guild.roles.cache.get(role).name)
-              .setStyle(ButtonStyle.Primary)
-          ),
-            count++;
+          if (role) {
+            row2.components.push(
+              new ButtonBuilder()
+                .setCustomId(role)
+                .setLabel(interaction.guild.roles.cache.get(role).name)
+                .setStyle(ButtonStyle.Primary)
+            );
+          }
+          count++;
         } else if (count <= 20 && count > 15) {
           row3.components.push(
             new ButtonBuilder()
@@ -107,13 +113,15 @@ module.exports = {
           ),
             count++;
         } else if (count <= 25 && count > 20) {
-          row4.components.push(
-            new ButtonBuilder()
-              .setCustomId(role)
-              .setLabel(interaction.guild.roles.cache.get(role).name)
-              .setStyle(ButtonStyle.Primary)
-          ),
-            count++;
+          if (role) {
+            row4.components.push(
+              new ButtonBuilder()
+                .setCustomId(role)
+                .setLabel(interaction.guild.roles.cache.get(role).name)
+                .setStyle(ButtonStyle.Primary)
+            );
+          }
+          count++;
         } else {
           interaction.editReply({
             content: "something went wrong creating buttons",
