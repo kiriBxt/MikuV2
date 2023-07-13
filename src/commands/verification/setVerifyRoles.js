@@ -74,6 +74,6 @@ module.exports = {
       }
     );
 
-    await interaction.reply("success");
+    await interaction.reply({ content: "success", ephemeral: true });
   },
 };

@@ -19,6 +19,6 @@ module.exports = {
         if (err) throw err;
       }
     );
-    await interaction.reply("success");
+    await interaction.reply({ content: "success", ephemeral: true });
   },
 };
