@@ -42,7 +42,7 @@ module.exports = {
     });
 
     await interaction.reply({
-      content: `${msgDeleted} will get deleted`,
+      content: `${msgDeleted} msgs will get deleted`,
       ephemeral: true,
     });
   },
