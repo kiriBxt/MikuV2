@@ -18,6 +18,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    await interaction.deferReply({ content: "deleting...", ephemeral: true });
     const number = interaction.options.getInteger("amount");
     let msgDeleted = 0;
     let messageId;
@@ -41,7 +42,7 @@ module.exports = {
       }
     });
 
-    await interaction.reply({
+    await interaction.editReply({
       content: `${msgDeleted} msgs will get deleted`,
       ephemeral: true,
     });
