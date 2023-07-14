@@ -9,7 +9,7 @@ const { useQueue } = require("discord-player");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("nowplaying")
-    .setDescription("Spielt song/playlist ab [Titel/Songlink/Playlistlink]"),
+    .setDescription("Zeigt den jetzigen song an"),
   async execute(interaction) {
     const queue = useQueue(interaction.guild.id);
     if (!queue)
