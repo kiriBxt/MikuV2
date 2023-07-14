@@ -8,21 +8,27 @@ module.exports = {
   cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("deleteroles")
-    .setDescription("deleteroles")
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .setDescription("deleteroles"),
   async execute(interaction) {
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
+
+    const tierList = [
+      "Tier 1",
+      "Tier 2",
+      "Tier 3",
+      "Tier 4",
+      "Tier 5",
+      "Tier 6",
+      "Tier 7",
+      "Tier 8",
+      "Tier 9",
+      "Tier 10",
+    ];
+
     const { guild } = interaction;
     guild.roles.cache.forEach(async (role) => {
-      try {
-        if (role) {
-          await role.delete();
-        }
-      } catch (e) {
-        return await interaction.editReply({
-          content: "deleted 1",
-          ephemeral: true,
-        });
+      if (tierList.find((del) => role.name == del)) {
+        await role.delete();
       }
     });
     await interaction.editReply({ content: "delete 2d", ephemeral: true });
