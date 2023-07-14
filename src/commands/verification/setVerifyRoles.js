@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const fs = require("fs");
+const Guild = require("../../models/guild");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -37,12 +37,13 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    var data = {};
     let checked = [];
     let dupe = false;
 
-    let selecRoles = [];
-    selecRoles.push(
+    let selecRolesName = [];
+    let passedRoles = [];
+    let selecRolesId = [];
+    selecRolesId.push(
       interaction.options.getRole("role1").id,
       interaction.options.getRole("role2")?.id,
       interaction.options.getRole("role3")?.id,
@@ -50,29 +51,35 @@ module.exports = {
       interaction.options.getRole("role5")?.id
     );
 
-    selecRoles.forEach((role) => {
+    selecRolesId.forEach((role) => {
       if (role) {
         if (checked.some((copy) => copy == role)) {
           dupe = true;
         }
         checked.push(role);
+        passedRoles.push(role);
       }
     });
     if (dupe) {
       return await interaction.reply("Keine Rollen doppelt auswählen!");
     }
 
-    data.verifyRoles = [];
-    data.verifyRoles.push({
-      roles: selecRoles,
-    });
-    fs.writeFile(
-      `./src/guildData/${interaction.guild.id}.json`,
-      JSON.stringify(data),
-      function (err) {
-        if (err) throw err;
+    selecRolesId.forEach(async (role) => {
+      if (role) {
+        let guildRole = await interaction.guild.roles.cache.get(role);
+        selecRolesName.push(guildRole.name);
       }
-    );
+    });
+
+    const [guild] = await Guild.findOrCreate({
+      where: { id: interaction.guild.id },
+    });
+
+    await guild.update({
+      verifyRoleId: passedRoles.toString(),
+      verifyRoleName: selecRolesName.toString(),
+      name: interaction.guild.name,
+    });
 
     await interaction.reply({ content: "success", ephemeral: true });
   },

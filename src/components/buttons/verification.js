@@ -6,11 +6,12 @@ module.exports = {
     name: `verify`,
   },
   async execute(interaction) {
-    const roles = interaction.member._roles;
+    const { guild, member } = interaction;
+    const roles = member._roles;
     await interaction.deferReply({ content: "", ephemeral: true });
 
     fs.readFile(
-      `./src/guildData/${interaction.guild.id}.json`,
+      `./src/guildData/${guild.id}.json`,
       "utf8",
       async (err, jsonString) => {
         if (err) {
@@ -30,7 +31,7 @@ module.exports = {
         verRoles.forEach(async (roleId) => {
           if (roleId) {
             try {
-              await interaction.member.roles.add(roleId);
+              await member.roles.add(roleId);
             } catch (e) {
               return interaction.editReply(e.rawError.message);
             }

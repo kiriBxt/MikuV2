@@ -11,8 +11,9 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    let selectedUser = interaction.options.getUser("user");
-    if (!selectedUser) selectedUser = interaction.user;
+    const { options, user } = interaction;
+    let selectedUser = options.getUser("user");
+    if (!selectedUser) selectedUser = user;
 
     const embed = new EmbedBuilder()
       .setTitle(`Profilbild von:\n**${selectedUser.tag}**`)

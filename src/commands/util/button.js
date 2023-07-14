@@ -35,9 +35,10 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    let input = interaction.options.getString("rollenids");
-    let title = interaction.options.getString("title");
-    let desc = interaction.options.getString("desc");
+    const { options, guild } = interaction;
+    let input = options.getString("rollenids");
+    let title = options.getString("title");
+    let desc = options.getString("desc");
     input.replace(/[^0-9]/g, "");
     let roles = input.split(",");
     if (roles.length > 25) {
@@ -74,7 +75,7 @@ module.exports = {
             row0.components.push(
               new ButtonBuilder()
                 .setCustomId(role)
-                .setLabel(interaction.guild.roles.cache.get(role).name)
+                .setLabel(guild.roles.cache.get(role).name)
                 .setStyle(ButtonStyle.Secondary)
             );
           }
@@ -84,7 +85,7 @@ module.exports = {
             row1.components.push(
               new ButtonBuilder()
                 .setCustomId(role)
-                .setLabel(interaction.guild.roles.cache.get(role).name)
+                .setLabel(guild.roles.cache.get(role).name)
                 .setStyle(ButtonStyle.Secondary)
             );
           }
@@ -94,7 +95,7 @@ module.exports = {
             row2.components.push(
               new ButtonBuilder()
                 .setCustomId(role)
-                .setLabel(interaction.guild.roles.cache.get(role).name)
+                .setLabel(guild.roles.cache.get(role).name)
                 .setStyle(ButtonStyle.Secondary)
             );
           }
@@ -103,7 +104,7 @@ module.exports = {
           row3.components.push(
             new ButtonBuilder()
               .setCustomId(role)
-              .setLabel(interaction.guild.roles.cache.get(role).name)
+              .setLabel(guild.roles.cache.get(role).name)
               .setStyle(ButtonStyle.Secondary)
           ),
             count++;
@@ -112,7 +113,7 @@ module.exports = {
             row4.components.push(
               new ButtonBuilder()
                 .setCustomId(role)
-                .setLabel(interaction.guild.roles.cache.get(role).name)
+                .setLabel(guild.roles.cache.get(role).name)
                 .setStyle(ButtonStyle.Secondary)
             );
           }

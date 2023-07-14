@@ -9,18 +9,20 @@ const chance = require("./enhanceSystem/chance");
 const game = require("./enhanceSystem/game");
 const cost = require("./enhanceSystem/cost");
 const pass = require("./enhanceSystem/pass");
+const User = require("../../models/user");
 module.exports = {
   data: {
     name: `enhance`,
   },
   async execute(interaction, client) {
     if (!client.enhanceUserList.some((user) => user == interaction.user.id)) {
-      await interaction.message.delete();
+      await message.delete();
       await interaction.reply({ content: "no cheating!", ephemeral: true });
       await wait(5000);
       return interaction.deleteReply();
     }
-    let embedFooterText = interaction.message.embeds[0].footer.text;
+    const { message } = interaction;
+    let embedFooterText = message.embeds[0].footer.text;
     if (interaction.user.id != embedFooterText) {
       return await interaction.reply({
         content: interaction.user.username + ", this is not your game!",
@@ -28,15 +30,17 @@ module.exports = {
       });
     }
 
-    let embedTitle = interaction.message.embeds[0].title;
-    let embedDesc = interaction.message.embeds[0].description;
-    let embedImageUrl = interaction.message.embeds[0].image.url;
-    let embedFields = interaction.message.embeds[0].fields;
-    let embedThumbnail = interaction.message.embeds[0].thumbnail.url;
+    let embedTitle = message.embeds[0].title;
+    let embedDesc = message.embeds[0].description;
+    let embedImageUrl = message.embeds[0].image.url;
+    let embedFields = message.embeds[0].fields;
+    let embedThumbnail = message.embeds[0].thumbnail.url;
 
     const newTier = game(chance(embedFields[0].value), embedFields[0].value);
     const newChance = String(chance(newTier) * 100);
     const newCost = String(cost(newTier));
+
+    const userDB = await User.findOne({ where: { id: interaction.user.id } });
 
     embedThumbnail = pass(embedFields[0].value, newTier);
 
@@ -45,9 +49,9 @@ module.exports = {
     // embedFields[1].name = "Enhance Chance: ";
     embedFields[1].value = newChance + "%";
     // embedFields[2].name = "Enhance Cost: ";
-    embedFields[2].value = newCost;
+    embedFields[2].value = newCost + "🍪";
     // embedFields[3].name = "your Balance ";
-    // embedFields[3].value = "comming soon";
+    embedFields[3].value = userDB.money + "🍪";
 
     const embed = new EmbedBuilder()
       .setTitle(embedTitle)
@@ -62,6 +66,8 @@ module.exports = {
         embedFields[3]
       );
 
+    await userDB.update({ tier: newTier });
+
     const row0 = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setStyle(ButtonStyle.Primary)
@@ -73,7 +79,7 @@ module.exports = {
         .setLabel("📄")
     );
 
-    await interaction.message.edit({ embeds: [embed], components: [row0] });
+    await message.edit({ embeds: [embed], components: [row0] });
 
     await interaction.reply({
       content: "you enhanced!",

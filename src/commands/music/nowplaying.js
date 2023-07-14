@@ -11,7 +11,8 @@ module.exports = {
     .setName("nowplaying")
     .setDescription("Zeigt den jetzigen song an"),
   async execute(interaction) {
-    const queue = useQueue(interaction.guild.id);
+    const { guild } = interaction;
+    const queue = useQueue(guild.id);
     if (!queue)
       return await interaction.reply({
         content: "Nichts in der queue",
@@ -19,17 +20,18 @@ module.exports = {
       });
 
     const track = queue.currentTrack;
+    const { title, url, author, thumbnail, requestedBy } = track;
     if (!queue)
       return await interaction.reply({
         content: "Nichts in der queue",
         ephemeral: true,
       });
     const embedAdded = new EmbedBuilder()
-      .setTitle(`🎵 ${track.title}`)
-      .setURL(`${track.url}`)
-      .setDescription(`${track.author}`)
+      .setTitle(`🎵 ${title}`)
+      .setURL(`${url}`)
+      .setDescription(`${author}`)
       .setColor(0x18e1ee)
-      .setThumbnail(track.thumbnail)
+      .setThumbnail(thumbnail)
       .addFields([
         {
           name: `Playing`,
@@ -38,7 +40,7 @@ module.exports = {
         },
         {
           name: `Requested by`,
-          value: `**${track.requestedBy}**`,
+          value: `**${requestedBy}**`,
           inline: true,
         },
       ]);

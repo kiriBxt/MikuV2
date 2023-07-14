@@ -9,7 +9,8 @@ module.exports = {
       option.setName("input").setDescription("User input").setRequired(true)
     ),
   async execute(interaction) {
-    const string = interaction.options.getString("input");
+    const { options } = interaction;
+    const string = options.getString("input");
     var fortunes = [
       "Ja!",
       "Sicherlich.",

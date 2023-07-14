@@ -28,20 +28,21 @@ module.exports = {
     const voiceChannel = interaction.member.voice.channel;
     if (!voiceChannel)
       return interaction.editReply("Du musst in einem Voicechannel sein!");
+    const { user, options, channel, member } = interaction;
     const player = useMainPlayer();
-    let search = interaction.options.getString("suche");
+    let search = options.getString("suche");
 
-    switch (interaction.options.getSubcommand()) {
+    switch (options.getSubcommand()) {
       case "song":
         const track = await player.search(search, {
-          requestedBy: interaction.user,
+          requestedBy: user,
           searchEngine: QueryType.YOUTUBE_SEARCH,
         });
         try {
           await player.play(voiceChannel, track, {
             nodeOptions: {
               metadata: {
-                channel: interaction.channel,
+                channel: channel,
               },
               selfDeaf: config.selfDeaf,
               volume: config.volume,
@@ -60,14 +61,14 @@ module.exports = {
         }
       case "playlist":
         const tracks = await player.search(search, {
-          requestedBy: interaction.user,
+          requestedBy: user,
           searchEngine: QueryType.YOUTUBE_PLAYLIST,
         });
         try {
-          await player.play(interaction.member.voice.channel, tracks, {
+          await player.play(member.voice.channel, tracks, {
             nodeOptions: {
               metadata: {
-                channel: interaction.channel,
+                channel: channel,
               },
               selfDeaf: config.selfDeaf,
               volume: config.volume,

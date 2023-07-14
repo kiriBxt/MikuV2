@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const fs = require("fs");
+const Guild = require("../../models/guild");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -7,18 +7,14 @@ module.exports = {
     .setDescription("Löscht alle Verifikationsrollen")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
-    var data = {};
-    data.verifyRoles = [];
-    data.verifyRoles.push({
-      roles: [],
+    const [guild] = await Guild.findOrCreate({
+      where: { id: interaction.guild.id },
     });
-    fs.writeFile(
-      `./src/guildData/${interaction.guild.id}.json`,
-      JSON.stringify(data),
-      function (err) {
-        if (err) throw err;
-      }
-    );
+    await guild.update({
+      verifyRoleId: "",
+      verifyRoleName: "",
+      name: interaction.guild.name,
+    });
     await interaction.reply({ content: "success", ephemeral: true });
   },
 };

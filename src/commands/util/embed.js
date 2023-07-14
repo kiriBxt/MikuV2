@@ -17,8 +17,9 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
-    const embedTitle = interaction.options.getString("title");
-    const embedDescription = interaction.options.getString("desc");
+    const { options } = interaction;
+    const embedTitle = options.getString("title");
+    const embedDescription = options.getString("desc");
 
     const embed = new EmbedBuilder()
       .setTitle(embedTitle)

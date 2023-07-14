@@ -19,12 +19,11 @@ module.exports = {
     ),
   async execute(interaction) {
     await interaction.deferReply({ content: "deleting...", ephemeral: true });
-    const number = interaction.options.getInteger("amount");
+    const { channel, options } = interaction;
+    const number = options.getInteger("amount");
     let msgDeleted = 0;
     let messageId;
     let msgArr = [];
-
-    const channel = interaction.channel;
 
     const messages = await channel.messages.fetch({ limit: number });
     messages.filter(

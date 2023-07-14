@@ -1,3 +1,4 @@
 node_modules*
 guildData*
 .env
+database.sqlite
