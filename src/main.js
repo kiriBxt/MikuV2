@@ -12,6 +12,7 @@ client.selectMenus = new Collection();
 client.cooldowns = new Collection();
 client.modals = new Collection();
 client.commandArray = [];
+client.enhanceUserList = [];
 
 const { Player } = require("discord-player");
 client.player = new Player(client, {
