@@ -103,7 +103,6 @@ module.exports = {
       components: [row0],
     });
     await wait(600000);
-    await interaction.deleteReply();
 
     if (client.enhanceUserList.find((user) => user == interaction.user.id)) {
       client.enhanceUserList.shift();
@@ -114,9 +113,11 @@ module.exports = {
     );
     await interaction.member.roles.add(role);
 
-    await interaction.followUp({
+    await interaction.editReply({
       content: "Game closed and role saved!",
       ephemeral: true,
     });
+    await wait(5000);
+    await interaction.deleteReply();
   },
 };
