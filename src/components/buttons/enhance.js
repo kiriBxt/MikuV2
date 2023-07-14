@@ -4,6 +4,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require("discord.js");
+const wait = require("node:timers/promises").setTimeout;
 const chance = require("./enhanceSystem/chance");
 const game = require("./enhanceSystem/game");
 const cost = require("./enhanceSystem/cost");
@@ -12,7 +13,13 @@ module.exports = {
   data: {
     name: `enhance`,
   },
-  async execute(interaction) {
+  async execute(interaction, client) {
+    if (!client.enhanceUserList.some((user) => user == interaction.user.id)) {
+      await interaction.message.delete();
+      await interaction.reply({ content: "no cheating!", ephemeral: true });
+      await wait(5000);
+      return interaction.deleteReply();
+    }
     let embedFooterText = interaction.message.embeds[0].footer.text;
     if (interaction.user.id != embedFooterText) {
       return await interaction.reply({

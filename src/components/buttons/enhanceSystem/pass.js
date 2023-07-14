@@ -1,4 +1,4 @@
-module.exports = function pass(oldTier, newTier) {
+const pass = (oldTier, newTier) => {
   oldTier = parseInt(oldTier.replace(/[^0-9]/g, ""));
   newTier = parseInt(newTier.replace(/[^0-9]/g, ""));
   if (newTier > oldTier) {
@@ -7,3 +7,4 @@ module.exports = function pass(oldTier, newTier) {
     return "https://freepngimg.com/download/fail_stamp/4-2-fail-stamp-transparent.png";
   }
 };
+module.exports = pass;

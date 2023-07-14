@@ -1,4 +1,4 @@
-module.exports = function chance(tier) {
+const chance = (tier) => {
   switch (tier) {
     case "Tier 1":
       return 0.8;
@@ -22,3 +22,4 @@ module.exports = function chance(tier) {
       return "out of bounds!";
   }
 };
+module.exports = chance;

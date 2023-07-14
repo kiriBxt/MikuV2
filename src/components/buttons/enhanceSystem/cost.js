@@ -1,4 +1,4 @@
-module.exports = function cost(tier) {
+const cost = (tier) => {
   switch (tier) {
     case "Tier 1":
       return 100;
@@ -22,3 +22,4 @@ module.exports = function cost(tier) {
       return "out of bounds!";
   }
 };
+module.exports = cost;

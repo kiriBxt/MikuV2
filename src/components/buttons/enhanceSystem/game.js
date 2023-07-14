@@ -1,4 +1,4 @@
-module.exports = function game(chance, tier) {
+const game = (chance, tier) => {
   const num = Math.floor(Math.random() * 101);
 
   let tierNum = parseInt(tier.replace(/[^0-9]/g, ""));
@@ -9,3 +9,5 @@ module.exports = function game(chance, tier) {
 
   return `Tier ${tierNum - 1}`;
 };
+
+module.exports = game;
