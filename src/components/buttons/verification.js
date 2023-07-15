@@ -7,7 +7,7 @@ module.exports = {
   },
   async execute(interaction) {
     const { guild, member } = interaction;
-    const roles = member._roles;
+    const roles = member.roles.cache;
 
     const guildDB = await Guild.findOne({ where: { id: guild.id } });
 
@@ -18,6 +18,12 @@ module.exports = {
       });
     }
     const verRoles = guildDB.verifyRoleId.split(",");
+    if (roles.some((role) => role.id == verRoles[0])) {
+      return await interaction.reply({
+        content: "Bereits verifiziert!",
+        ephemeral: true,
+      });
+    }
     await interaction.deferReply({ content: "", ephemeral: true });
 
     verRoles.forEach(async (roleId) => {
