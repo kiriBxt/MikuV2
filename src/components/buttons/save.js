@@ -4,23 +4,29 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require("discord.js");
+const enhanceOpenInstance = require("../../commands/fun/funtools/enhanceOpenInstance");
+const guildGetRoleName = require("../../guildhelper/guildGetRoleName");
 const wait = require("node:timers/promises").setTimeout;
 module.exports = {
   data: {
     name: `save`,
   },
   async execute(interaction, client) {
-    const { message, member } = interaction;
+    const { message, member, guild } = interaction;
+    const { enhanceUserList } = client;
     await message.delete();
 
-    if (client.enhanceUserList.find((user) => user == interaction.user.id)) {
-      client.enhanceUserList.shift();
+    if (enhanceOpenInstance(enhanceUserList, member.id)) {
+      enhanceUserList.forEach((user) => {
+        if (user == member.id) {
+          return enhanceUserList.shift();
+        }
+      });
     }
+
     let embedFields = message.embeds[0].fields;
 
-    let role = interaction.guild.roles.cache.find(
-      (role) => role.name === embedFields[0].value
-    );
+    let role = guildGetRoleName(guild, embedFields[0].value);
     await member.roles.add(role);
 
     await interaction.reply({

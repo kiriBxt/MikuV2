@@ -8,11 +8,9 @@ const {
 const chance = require("../../components/buttons/enhanceSystem/chance.js");
 const cost = require("../../components/buttons/enhanceSystem/cost.js");
 const wait = require("node:timers/promises").setTimeout;
-const User = require("../../models/user.js");
 const generateRandomHex = require("./funtools/generateRanomdHex.js");
-const guildHasRoleName = require("../../guildhelper/guildHasRoleName.js");
 const enhanceOpenInstance = require("./funtools/enhanceOpenInstance.js");
-const fetchUser = require("../../guildhelper/fetchUser.js");
+const fetchUser = require("../../events/client/dbHelper/fetchUser.js");
 const enhanceRoleCheck = require("./funtools/enhanceRoleCheck.js");
 const guildRoleCreation = require("../../guildhelper/guildRoleCreation.js");
 const guildGetRoleName = require("../../guildhelper/guildGetRoleName.js");
@@ -33,7 +31,7 @@ module.exports = {
       });
     }
 
-    const user = fetchUser(member.id);
+    const user = await fetchUser(member.id);
 
     if (!user) {
       return await interaction.reply({
@@ -111,7 +109,7 @@ module.exports = {
       });
     }
 
-    const [user2] = fetchUser(member.id);
+    const [user2] = await fetchUser(member.id);
 
     let role = guildGetRoleName(user2.tier);
     await member.roles.add(role);

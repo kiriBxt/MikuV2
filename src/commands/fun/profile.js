@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const filledBar = require("./funtools/filledBar");
 const User = require("../../models/user");
-const fetchUser = require("../../guildhelper/fetchUser");
+const fetchUser = require("../../events/client/dbHelper/fetchUser");
 
 module.exports = {
   data: new SlashCommandBuilder()
