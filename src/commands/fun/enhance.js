@@ -49,11 +49,9 @@ module.exports = {
     ];
 
     if (
-      !tierList.some((check) =>
-        guild.roles.cache.some((role) => {
-          role.name == check;
-        })
-      )
+      !guild.roles.cache.some((role) => {
+        role.name == tierList[0];
+      })
     ) {
       tierList.forEach(async (role) => {
         await guild.roles.create({
