@@ -48,17 +48,22 @@ module.exports = {
       "Tier 10",
     ];
 
+    guild.roles.cache.some((role) => {
+      console.log(role.name);
+      role.name == tierList[0];
+    });
     if (
       !guild.roles.cache.some((role) => {
         role.name == tierList[0];
       })
     ) {
-      tierList.forEach(async (role) => {
-        await guild.roles.create({
-          name: role,
-          color: generateRandomHex(),
-        });
-      });
+      console.log("role creation");
+      // tierList.forEach(async (role) => {
+      //   await guild.roles.create({
+      //     name: role,
+      //     color: generateRandomHex(),
+      //   });
+      // });
     }
 
     tierList.forEach(async (tierRole) => {
