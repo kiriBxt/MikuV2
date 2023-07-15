@@ -39,7 +39,7 @@ module.exports = {
     let input = options.getString("rollenids");
     let title = options.getString("title");
     let desc = options.getString("desc");
-    input.replace(/[^0-9]/g, "");
+    input.replaceAll(/[^0-9]/g, "");
     let roles = input.split(",");
     if (roles.length > 25) {
       return await interaction.reply("Das Limit pro Embed liegt bei 25");

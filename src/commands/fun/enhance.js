@@ -9,7 +9,13 @@ const chance = require("../../components/buttons/enhanceSystem/chance.js");
 const cost = require("../../components/buttons/enhanceSystem/cost.js");
 const wait = require("node:timers/promises").setTimeout;
 const User = require("../../models/user.js");
-const generateRandomHex = require("./nekopass/generateRanomdHex.js");
+const generateRandomHex = require("./funtools/generateRanomdHex.js");
+const guildHasRoleName = require("../../guildhelper/guildHasRoleName.js");
+const enhanceOpenInstance = require("./funtools/enhanceOpenInstance.js");
+const fetchUser = require("../../guildhelper/fetchUser.js");
+const enhanceRoleCheck = require("./funtools/enhanceRoleCheck.js");
+const guildRoleCreation = require("../../guildhelper/guildRoleCreation.js");
+const guildGetRoleName = require("../../guildhelper/guildGetRoleName.js");
 
 module.exports = {
   cooldown: 10,
@@ -19,13 +25,15 @@ module.exports = {
   async execute(interaction, client) {
     const { member, guild } = interaction;
     const { enhanceUserList } = client;
-    if (enhanceUserList.some((user) => user == interaction.user.id)) {
+
+    if (enhanceOpenInstance(enhanceUserList, member.id)) {
       return await interaction.reply({
         content: "du hast noch eine instanz offen!",
         ephemeral: true,
       });
     }
-    const user = await User.findOne({ where: { id: interaction.user.id } });
+
+    const user = fetchUser(member.id);
 
     if (!user) {
       return await interaction.reply({
@@ -34,51 +42,16 @@ module.exports = {
       });
     }
 
-    let currTier = user.tier;
-    const tierList = [
-      "Tier 1",
-      "Tier 2",
-      "Tier 3",
-      "Tier 4",
-      "Tier 5",
-      "Tier 6",
-      "Tier 7",
-      "Tier 8",
-      "Tier 9",
-      "Tier 10",
-    ];
-
-    tierList.forEach(async (find) => {
-      console.log(
-        guild.roles.cache.some((role) => {
-          role.name == find;
-        })
-      );
-      if (
-        !guild.roles.cache.some((role) => {
-          role.name == find;
-        })
-      ) {
-        console.log(`generating ...${find}...`);
-        //await guild.roles.create({ name: find, color: generateRandomHex() });
-      }
-    });
-
-    tierList.forEach(async (tierRole) => {
-      if (member.roles.cache.find((r) => r.name === tierRole)) {
-        currTier = tierRole;
-        let role = guild.roles.cache.find((role) => role.name === tierRole);
-        await member.roles.remove(role);
-      }
-    });
-
-    if (!currTier) {
-      currTier = "Tier 1";
+    let missingRoles = enhanceRoleCheck(guild);
+    if (missingRoles.length > 0) {
+      missingRoles.forEach(async (role) => {
+        await guildRoleCreation(guild, role, generateRandomHex());
+      });
     }
 
     await interaction.deferReply("loading...");
-    enhanceUserList.push(interaction.user.id);
 
+    enhanceUserList.push(member.id);
     const row0 = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setStyle(ButtonStyle.Primary)
@@ -91,6 +64,7 @@ module.exports = {
     );
 
     const embed1 = new EmbedBuilder().setTitle("loading...");
+    let currTier = user.tier;
     await interaction.editReply({ embeds: [embed1] });
 
     const embed = new EmbedBuilder()
@@ -129,13 +103,17 @@ module.exports = {
     });
     await wait(600000);
 
-    if (enhanceUserList.find((user) => user == member.id)) {
-      enhanceUserList.shift();
+    if (enhanceOpenInstance(enhanceUserList, member.id)) {
+      enhanceUserList.forEach((user) => {
+        if (user == member.id) {
+          return enhanceUserList.shift();
+        }
+      });
     }
 
-    const [user2] = await User.findOrCreate({ where: { id: member.id } });
+    const [user2] = fetchUser(member.id);
 
-    let role = guild.roles.cache.find((role) => role.name === user2.tier);
+    let role = guildGetRoleName(user2.tier);
     await member.roles.add(role);
 
     await interaction.editReply({

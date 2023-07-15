@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const generateRandomHex = require("./nekopass/generateRanomdHex");
+const generateRandomHex = require("./funtools/generateRanomdHex");
 
 module.exports = {
   cooldown: 1,

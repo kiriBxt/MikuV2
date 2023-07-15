@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const filledBar = require("./nekopass/filledBar");
+const filledBar = require("./funtools/filledBar");
 const User = require("../../models/user");
+const fetchUser = require("../../guildhelper/fetchUser");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,7 +17,7 @@ module.exports = {
     let selectedUser = interaction.options.getUser("target");
     if (!selectedUser) selectedUser = interaction.user;
 
-    const user = await User.findOne({ where: { id: selectedUser.id } });
+    const user = fetchUser(selectedUser.id);
 
     if (!user)
       return await interaction.reply({
