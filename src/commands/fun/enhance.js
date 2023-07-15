@@ -51,12 +51,11 @@ module.exports = {
     if (
       !tierList.some((check) =>
         guild.roles.cache.some((role) => {
-          if (role.name == check) return;
+          role.name == check;
         })
       )
     ) {
       tierList.forEach(async (role) => {
-        console.log(role);
         await guild.roles.create({
           name: role,
           color: generateRandomHex(),
