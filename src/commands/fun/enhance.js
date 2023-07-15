@@ -9,6 +9,7 @@ const chance = require("../../components/buttons/enhanceSystem/chance.js");
 const cost = require("../../components/buttons/enhanceSystem/cost.js");
 const wait = require("node:timers/promises").setTimeout;
 const User = require("../../models/user.js");
+const generateRandomHex = require("./nekopass/generateRanomdHex.js");
 
 module.exports = {
   cooldown: 10,
@@ -49,13 +50,16 @@ module.exports = {
 
     if (
       !tierList.some((check) =>
-        guild.roles.cache.some((role) => role.name == check)
+        guild.roles.cache.some((role) => {
+          if (role.name == check) return;
+        })
       )
     ) {
       tierList.forEach(async (role) => {
+        console.log(role);
         await guild.roles.create({
           name: role,
-          color: 1,
+          color: generateRandomHex(),
         });
       });
     }
@@ -129,7 +133,7 @@ module.exports = {
       enhanceUserList.shift();
     }
 
-    const [user2] = await User.findOrCreate({ where: { id: author.id } });
+    const [user2] = await User.findOrCreate({ where: { id: member.id } });
 
     let role = guild.roles.cache.find((role) => role.name === user2.tier);
     await member.roles.add(role);

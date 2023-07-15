@@ -36,6 +36,22 @@ module.exports = {
     let embedFields = message.embeds[0].fields;
     let embedThumbnail = message.embeds[0].thumbnail.url;
 
+    let currBal =
+      parseInt(embedFields[3].value) - parseInt(embedFields[2].value);
+
+    console.log(currBal);
+    console.log(embedFields[3].value);
+    console.log(embedFields[2].value);
+
+    if (currBal < 0) {
+      await interaction.reply({
+        content: "du hast kein Geld mehr!",
+        ephemeral: true,
+      });
+      await wait(5000);
+      return interaction.deleteReply();
+    }
+
     const newTier = game(chance(embedFields[0].value), embedFields[0].value);
     const newChance = String(chance(newTier) * 100);
     const newCost = String(cost(newTier));
@@ -51,7 +67,7 @@ module.exports = {
     // embedFields[2].name = "Enhance Cost: ";
     embedFields[2].value = newCost + "🍪";
     // embedFields[3].name = "your Balance ";
-    embedFields[3].value = userDB.money + "🍪";
+    embedFields[3].value = currBal + "🍪";
 
     const embed = new EmbedBuilder()
       .setTitle(embedTitle)
@@ -78,6 +94,8 @@ module.exports = {
         .setCustomId("save")
         .setLabel("📄")
     );
+
+    await userDB.update({ tier: newTier, money: currBal });
 
     await message.edit({ embeds: [embed], components: [row0] });
 
