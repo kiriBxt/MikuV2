@@ -104,26 +104,25 @@ module.exports = {
     });
     await wait(600000);
 
-    await interaction.message.delete();
+    try {
+      await interaction.message.delete();
 
-    if (enhanceOpenInstance(enhanceUserList, member.id)) {
-      enhanceUserList.forEach((user) => {
-        if (user == member.id) {
-          return enhanceUserList.shift();
-        }
+      if (enhanceOpenInstance(enhanceUserList, member.id)) {
+        enhanceUserList.forEach((user) => {
+          if (user == member.id) {
+            return enhanceUserList.shift();
+          }
+        });
+      }
+      const [user2] = await fetchUser(member.id);
+      let role = guildGetRoleName(user2.tier);
+      await member.roles.add(role);
+      await interaction.editReply({
+        content: "Game closed and data saved!",
+        ephemeral: true,
       });
-    }
-
-    const [user2] = await fetchUser(member.id);
-
-    let role = guildGetRoleName(user2.tier);
-    await member.roles.add(role);
-
-    await interaction.editReply({
-      content: "Game closed and data saved!",
-      ephemeral: true,
-    });
-    await wait(5000);
-    await interaction.deleteReply();
+      await wait(5000);
+      await interaction.deleteReply();
+    } catch (e) {}
   },
 };
