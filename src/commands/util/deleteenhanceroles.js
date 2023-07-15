@@ -7,7 +7,7 @@ const {
 module.exports = {
   cooldown: 10,
   data: new SlashCommandBuilder()
-    .setName("deleteenhanceroles")
+    .setName("deleteroles")
     .setDescription("deletes all enhance roles")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
