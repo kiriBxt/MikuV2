@@ -1,7 +1,6 @@
 const User = require("../../../models/user");
 
 const addEco = async (author) => {
-  console.log(author);
   const [user] = await User.findOrCreate({ where: { id: author.id } });
   let name = await user.name;
   let xp = await user.xp;
