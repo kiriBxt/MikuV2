@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("@discordjs/builders");
-const fs = require("fs");
+const Guild = require("../../models/guild");
 
 module.exports = {
   data: {
@@ -8,38 +8,28 @@ module.exports = {
   async execute(interaction) {
     const { guild, member } = interaction;
     const roles = member._roles;
+
+    const guildDB = await Guild.findOne({ where: { id: guild.id } });
+
+    if (guildDB.verifyRoleId == "") {
+      return await interaction.reply({
+        content: "wähle verfifikationsrollen mit /setverifyroles aus!",
+        ephemeral: true,
+      });
+    }
+    const verRoles = guildDB.verifyRoleId.split(",");
     await interaction.deferReply({ content: "", ephemeral: true });
 
-    fs.readFile(
-      `./src/guildData/${guild.id}.json`,
-      "utf8",
-      async (err, jsonString) => {
-        if (err) {
-          return interaction.editReply("Bitte benutze /setverification");
+    verRoles.forEach(async (roleId) => {
+      if (roleId) {
+        try {
+          await member.roles.add(roleId);
+        } catch (e) {
+          return interaction.editReply(e.rawError.message);
         }
-        const data = JSON.parse(jsonString);
-        const verRoles = data.verifyRoles[0].roles;
-
-        if (verRoles[0] == null) {
-          return interaction.editReply("Bitte benutze /setverification");
-        }
-
-        if (roles.includes(verRoles[0]) === true) {
-          return interaction.editReply("bereits verifiziert");
-        }
-
-        verRoles.forEach(async (roleId) => {
-          if (roleId) {
-            try {
-              await member.roles.add(roleId);
-            } catch (e) {
-              return interaction.editReply(e.rawError.message);
-            }
-          }
-        });
-
-        await interaction.editReply("Du bist nun verifiziert");
       }
-    );
+    });
+
+    await interaction.editReply("Du bist nun verifiziert");
   },
 };
