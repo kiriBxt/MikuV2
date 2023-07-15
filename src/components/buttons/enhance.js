@@ -39,10 +39,6 @@ module.exports = {
     let currBal =
       parseInt(embedFields[3].value) - parseInt(embedFields[2].value);
 
-    console.log(currBal);
-    console.log(embedFields[3].value);
-    console.log(embedFields[2].value);
-
     if (currBal < 0) {
       await interaction.reply({
         content: "du hast kein Geld mehr!",

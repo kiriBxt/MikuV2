@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const filledBar = require("./funtools/filledBar");
-const User = require("../../models/user");
 const fetchUser = require("../../events/client/dbHelper/fetchUser");
 
 module.exports = {
@@ -17,7 +16,7 @@ module.exports = {
     let selectedUser = interaction.options.getUser("target");
     if (!selectedUser) selectedUser = interaction.user;
 
-    const user = fetchUser(selectedUser.id);
+    const user = await fetchUser(selectedUser.id);
 
     if (!user)
       return await interaction.reply({

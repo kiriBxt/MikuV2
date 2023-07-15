@@ -14,7 +14,7 @@ module.exports = {
     embed.setDescription(
       `API Latency: ${client.ws.ping}ms\nClient Ping ${
         message.createdTimestamp - interaction.createdTimestamp
-      }ms}`
+      }ms`
     );
     await interaction.editReply({
       embeds: [embed],
