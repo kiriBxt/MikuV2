@@ -78,8 +78,6 @@ module.exports = {
         embedFields[3]
       );
 
-    await userDB.update({ tier: newTier });
-
     const row0 = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setStyle(ButtonStyle.Primary)

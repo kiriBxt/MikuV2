@@ -14,6 +14,7 @@ const fetchUser = require("../../events/client/dbHelper/fetchUser.js");
 const enhanceRoleCheck = require("./funtools/enhanceRoleCheck.js");
 const guildRoleCreation = require("../../guildhelper/guildRoleCreation.js");
 const guildGetRoleName = require("../../guildhelper/guildGetRoleName.js");
+const enhanceRoleRemover = require("./funtools/enhanceRoleRemover.js");
 
 module.exports = {
   cooldown: 10,
@@ -30,6 +31,8 @@ module.exports = {
         ephemeral: true,
       });
     }
+
+    enhanceRoleRemover(member);
 
     const user = await fetchUser(member.id);
 
@@ -100,6 +103,8 @@ module.exports = {
       components: [row0],
     });
     await wait(600000);
+
+    await interaction.message.delete();
 
     if (enhanceOpenInstance(enhanceUserList, member.id)) {
       enhanceUserList.forEach((user) => {
