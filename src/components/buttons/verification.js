@@ -11,7 +11,7 @@ module.exports = {
 
     const guildDB = await Guild.findOne({ where: { id: guild.id } });
 
-    if (guildDB.verifyRoleId == "") {
+    if (!guildDB || guildDB.verifyRoleId == "" || !guildDB.verifyRoleId) {
       return await interaction.reply({
         content: "wähle verfifikationsrollen mit /setverifyroles aus!",
         ephemeral: true,
