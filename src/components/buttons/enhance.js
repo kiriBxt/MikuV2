@@ -17,7 +17,7 @@ module.exports = {
   async execute(interaction, client) {
     const { message } = interaction;
     if (interaction.user.id != message.embeds[0].footer.text)
-      return interaction.reply("Nanana");
+      return interaction.reply({ content: "Nanana", ephemeral: true });
 
     if (!client.enhanceUserList.some((user) => user == interaction.user.id)) {
       await message.delete();
