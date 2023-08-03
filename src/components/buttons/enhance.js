@@ -15,6 +15,10 @@ module.exports = {
     name: `enhance`,
   },
   async execute(interaction, client) {
+    const { message } = interaction;
+    if (interaction.user.id != message.embeds[0].footer.text)
+      return interaction.reply("Nanana");
+
     if (!client.enhanceUserList.some((user) => user == interaction.user.id)) {
       await message.delete();
       await interaction.reply({ content: "no cheating!", ephemeral: true });
@@ -22,7 +26,6 @@ module.exports = {
       return interaction.deleteReply();
     }
     try {
-      const { message } = interaction;
       let embedFooterText = message.embeds[0].footer.text;
       if (interaction.user.id != embedFooterText) {
         return await interaction.reply({

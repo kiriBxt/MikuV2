@@ -13,6 +13,8 @@ module.exports = {
   },
   async execute(interaction, client) {
     const { message, member, guild } = interaction;
+    if (interaction.user.id != message.embeds[0].footer.text)
+      return interaction.reply("Nanana");
     const { enhanceUserList } = client;
     await message.delete();
 
