@@ -105,6 +105,7 @@ module.exports = {
     await wait(600000);
 
     try {
+      if (!message) return;
       await interaction.message.delete();
 
       if (enhanceOpenInstance(enhanceUserList, member.id)) {
