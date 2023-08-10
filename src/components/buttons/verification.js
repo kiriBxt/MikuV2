@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("@discordjs/builders");
-const { getGuildProfile } = require("../../tools/verification");
+const { getGuildProfile } = require("../../tools/economy");
 
 module.exports = {
   data: {
