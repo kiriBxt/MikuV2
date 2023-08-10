@@ -17,7 +17,7 @@ module.exports = {
     let selectedUser = options.getUser("target");
     if (!selectedUser) selectedUser = user;
 
-    let userProfile = await getProfile(user);
+    let userProfile = await getProfile(selectedUser);
 
     let levelPerc = Math.round(
       (userProfile.userXp / (userProfile.userLevel * 100)) * 100
