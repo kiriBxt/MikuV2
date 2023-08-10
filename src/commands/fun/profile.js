@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const filledBar = require("./funtools/filledBar");
-const fetchUser = require("../../events/client/dbHelper/fetchUser");
+const filledBar = require("./tools/filledBar");
+const { getProfile } = require("../../tools/economy");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,24 +13,15 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    let selectedUser = interaction.options.getUser("target");
-    if (!selectedUser) selectedUser = interaction.user;
+    const { options, user } = interaction;
+    let selectedUser = options.getUser("target");
+    if (!selectedUser) selectedUser = user;
 
-    const user = await fetchUser(selectedUser.id);
+    let userProfile = await getProfile(user);
 
-    if (!user)
-      return await interaction.reply({
-        content: `User ${selectedUser} not in Database`,
-        ephemeral: true,
-      });
-
-    let level = user.level;
-    let leveldown = 100 * (level - 1) + 100 * 0.5 * (level - 1) ** 2;
-
-    const currXp = user.xp - leveldown;
-    const currXpNeeded = user.xpNeeded - leveldown;
-
-    let levelPerc = Math.round((currXp / currXpNeeded) * 100);
+    let levelPerc = Math.round(
+      (userProfile.userXp / (userProfile.userLevel * 100)) * 100
+    );
 
     const embed = new EmbedBuilder()
       .setTitle(`Neko Pass`)
@@ -42,38 +33,35 @@ module.exports = {
       .addFields([
         {
           name: `Level`,
-          value: `${user.level}`,
+          value: `${userProfile.userLevel}`,
           inline: true,
         },
         {
           name: `XP`,
-          value: `${user.xp}`,
+          value: `${userProfile.userXp}`,
           inline: true,
         },
         {
           name: `Level Fortschritt: ${levelPerc}%`,
           value: `${filledBar(
-            currXpNeeded,
-            currXp,
+            userProfile.userLevel * 100,
+            userProfile.userXp,
             (size = 10),
             (line = "▱"),
             (slider = "▰")
-          )}\n**${currXpNeeded - currXp}xp to next level**`,
+          )}\n**${
+            userProfile.userLevel * 100 - userProfile.userXp
+          }xp to next level**`,
           inline: false,
         },
         {
           name: `Bank`,
-          value: `${user.money} 🍪`,
+          value: `${userProfile.userBal} 🍪`,
           inline: true,
         },
         {
           name: `Tier`,
-          value: `${user.tier}`,
-          inline: true,
-        },
-        {
-          name: `Rep`,
-          value: `${user.rep}`,
+          value: `${userProfile.userTier}`,
           inline: true,
         },
       ]);

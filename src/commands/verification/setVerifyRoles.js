@@ -1,5 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const Guild = require("../../models/guild");
+const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  EmbedBuilder,
+} = require("discord.js");
+const { getGuildProfile } = require("../../tools/economy");
+const { dupeChecker } = require("./tools/dupeChecker");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -37,50 +42,42 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    let checked = [];
-    let dupe = false;
+    const { options, guild } = interaction;
 
-    let selecRolesName = [];
-    let passedRoles = [];
     let selecRolesId = [];
     selecRolesId.push(
-      interaction.options.getRole("role1").id,
-      interaction.options.getRole("role2")?.id,
-      interaction.options.getRole("role3")?.id,
-      interaction.options.getRole("role4")?.id,
-      interaction.options.getRole("role5")?.id
+      options.getRole("role1").id,
+      options.getRole("role2")?.id,
+      options.getRole("role3")?.id,
+      options.getRole("role4")?.id,
+      options.getRole("role5")?.id
     );
 
-    selecRolesId.forEach((role) => {
-      if (role) {
-        if (checked.some((copy) => copy == role)) {
-          dupe = true;
-        }
-        checked.push(role);
-        passedRoles.push(role);
-      }
-    });
-    if (dupe) {
+    let checked = dupeChecker(selecRolesId);
+
+    if (checked === true) {
       return await interaction.reply("Keine Rollen doppelt auswählen!");
     }
 
-    selecRolesId.forEach(async (role) => {
+    let selecRolesName = [];
+    checked.forEach((role) => {
       if (role) {
-        let guildRole = await interaction.guild.roles.cache.get(role);
+        let guildRole = guild.roles.cache.get(role);
         selecRolesName.push(guildRole.name);
       }
     });
 
-    const [guild] = await Guild.findOrCreate({
-      where: { id: interaction.guild.id },
-    });
+    let guildProfile = await getGuildProfile(guild);
 
-    await guild.update({
-      verifyRoleId: passedRoles.toString(),
-      verifyRoleName: selecRolesName.toString(),
-      name: interaction.guild.name,
-    });
+    guildProfile.guildVerifyRoleIds = checked;
+    guildProfile.guildVerifyRoleNames = selecRolesName;
+    guildProfile.save().catch(console.error);
 
-    await interaction.reply({ content: "success", ephemeral: true });
+    let embed = new EmbedBuilder().setTitle("Verify Rollen wurden erstellt.");
+
+    return interaction.reply({
+      embeds: [embed],
+      ephemeral: true,
+    });
   },
 };

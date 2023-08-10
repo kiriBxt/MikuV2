@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("@discordjs/builders");
-const Guild = require("../../models/guild");
+const { getGuildProfile } = require("../../tools/verification");
 
 module.exports = {
   data: {
@@ -9,15 +9,20 @@ module.exports = {
     const { guild, member } = interaction;
     const roles = member.roles.cache;
 
-    const guildDB = await Guild.findOne({ where: { id: guild.id } });
+    let guildProfile = await getGuildProfile(guild);
 
-    if (!guildDB || guildDB.verifyRoleId == "" || !guildDB.verifyRoleId) {
-      return await interaction.reply({
-        content: "wähle verfifikationsrollen mit /setverifyroles aus!",
+    if (guildProfile.guildVerifyRoleIds.length == 0) {
+      let embed = new EmbedBuilder().setTitle(
+        "Benutze /setverifyroles um Rollen auszuwählen."
+      );
+
+      return interaction.reply({
+        embeds: [embed],
         ephemeral: true,
       });
     }
-    const verRoles = guildDB.verifyRoleId.split(",");
+
+    const verRoles = guildProfile.guildVerifyRoleIds;
     if (roles.some((role) => role.id == verRoles[0])) {
       return await interaction.reply({
         content: "Bereits verifiziert!",

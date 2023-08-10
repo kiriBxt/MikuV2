@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const _8ball = require("./funtools/_8ball");
+const _8ball = require("./tools/_8ball");
 
 module.exports = {
   cooldown: 10,

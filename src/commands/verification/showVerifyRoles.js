@@ -3,7 +3,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const Guild = require("../../models/guild");
+const { getGuildProfile } = require("../../tools/economy");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -11,20 +11,26 @@ module.exports = {
     .setDescription("Füge Verifikationsrollen hinzu")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
+    const { guild } = interaction;
     let roleList = "";
 
-    const guildDb = await Guild.findOne({
-      where: { id: interaction.guild.id },
-    });
-    if (!guildDb.verifyRoleName) {
-      return await interaction.reply({
-        content: "Benutze /setverifyroles um rollen hinzu zu fügen",
+    let guildProfile = await getGuildProfile(guild);
+
+    if (guildProfile.guildVerifyRoleIds.length == 0) {
+      let embed = new EmbedBuilder().setTitle(
+        "Benutze /setverifyroles um Rollen auszuwählen."
+      );
+
+      return interaction.reply({
+        embeds: [embed],
+        ephemeral: true,
       });
     }
 
-    guildDb.verifyRoleName.split(",").forEach((role) => {
+    guildProfile.guildVerifyRoleNames.forEach((role) => {
       roleList += role + "\n";
     });
+
     let embed = new EmbedBuilder()
       .setTitle("Verifyroles")
       .setDescription(roleList);
