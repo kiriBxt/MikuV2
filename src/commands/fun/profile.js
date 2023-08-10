@@ -56,7 +56,7 @@ module.exports = {
         },
         {
           name: `Bank`,
-          value: `${userProfile.userBal} 🍪`,
+          value: `${userProfile.userBal} 💰`,
           inline: true,
         },
         {
