@@ -11,7 +11,7 @@ async function getGuildProfile(guild) {
   let guildProfile = await Guild.findOne({ guildId: guild.id });
   if (!guildProfile) {
     guildProfile = new Guild({
-      _id: new mongoose.Type.ObjectId(),
+      _id: new mongoose.Types.ObjectId(),
       guildId: guild.id,
       guildName: guild.name,
     });
