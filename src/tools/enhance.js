@@ -70,7 +70,7 @@ async function game(user) {
   let tier = await getTier(user);
   let bal = await getBal(user);
   if (bal < getCost(tier)) {
-    return "Kein Geld!";
+    return;
   }
   const num = Math.floor(Math.random() * 101);
   if (getChance(tier) * 100 >= num) {

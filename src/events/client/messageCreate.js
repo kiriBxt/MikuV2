@@ -5,6 +5,6 @@ module.exports = {
   async execute(message) {
     if (message.author.bot) return;
     await addXp(message.author, 10, 30);
-    await addBal(message.author, 25, 100);
+    await addBal(message.author, 50, 100);
   },
 };
