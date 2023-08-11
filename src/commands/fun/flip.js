@@ -50,14 +50,14 @@ module.exports = {
       return interaction.reply({
         content: `Du hast ${value} 💰 gewonnen und hast jetzt ${
           userProfile.userBal + value
-        }!`,
+        } 💰!`,
       });
     } else {
       setBal(user, userProfile.userBal - value);
       return interaction.reply({
         content: `Du hast ${value} 💰 verloren und hast jetzt ${
           userProfile.userBal - value
-        }!`,
+        } 💰!`,
       });
     }
   },
