@@ -14,11 +14,11 @@ module.exports = {
         .addChoices({ name: "High", value: "1" }, { name: "Low", value: "0" })
     )
     .addStringOption((option) =>
-      option.setName("value").setDescription("Geld").setRequired(true)
+      option.setName("einsatz").setDescription("Geld").setRequired(true)
     ),
   async execute(interaction) {
     const { options, user } = interaction;
-    const value = parseInt(options.getString("value"));
+    const value = parseInt(options.getString("einsatz"));
     const guess = options.getString("highxlow");
 
     const userProfile = await getProfile(user);
