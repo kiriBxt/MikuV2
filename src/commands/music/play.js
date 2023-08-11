@@ -80,12 +80,12 @@ module.exports = {
           });
         } catch (error) {
           console.log(error);
-          return interaction.reply(`**[${search}]** ist ungültig!`);
+          return interaction.editReply(`**[${search}]** ist ungültig!`);
         }
         let queue = "\u200b";
 
-        if (!tracks.playlist) {
-          return await interaction.reply({
+        if (tracks.playlist.length == 0) {
+          return await interaction.editReply({
             content: "Nichts in der queue",
             ephemeral: true,
           });
