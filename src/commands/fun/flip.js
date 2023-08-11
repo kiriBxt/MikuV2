@@ -48,12 +48,16 @@ module.exports = {
     if (guess == win) {
       setBal(user, userProfile.userBal + value);
       return interaction.reply({
-        content: `Du hast ${value} 💰 gewonnen`,
+        content: `Du hast ${value} 💰 gewonnen und hast jetzt ${
+          userProfile.userBal + value
+        }!`,
       });
     } else {
       setBal(user, userProfile.userBal - value);
       return interaction.reply({
-        content: `Du hast ${value} 💰 verloren`,
+        content: `Du hast ${value} 💰 verloren und hast jetzt ${
+          userProfile.userBal - value
+        }!`,
       });
     }
   },
