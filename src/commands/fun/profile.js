@@ -28,7 +28,7 @@ module.exports = {
       .setColor(0x18e1ee)
       .setThumbnail(selectedUser.displayAvatarURL())
       .setAuthor({
-        name: selectedUser.tag,
+        name: selectedUser.username,
       })
       .addFields([
         {
