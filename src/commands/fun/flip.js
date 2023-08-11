@@ -1,8 +1,15 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { getProfile, setBal } = require("../../tools/economy");
+const wait = require("node:timers/promises").setTimeout;
+
+function flip(val) {
+  if (val == 0) return "Low";
+  if (val == 1) return "High";
+  return;
+}
 
 module.exports = {
-  cooldown: 5,
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("flip")
     .setDescription("Vergamble dein ganzes Geld!")
@@ -23,42 +30,81 @@ module.exports = {
 
     const userProfile = await getProfile(user);
 
+    const embed = new EmbedBuilder();
+
     if (isNaN(value)) {
+      embed.setTitle("Du musst auch eine Zahl eingeben!");
       return interaction.reply({
-        content: `Du musst auch eine Zahl eingeben!`,
+        embeds: [embed],
         ephemeral: true,
       });
     }
 
     if (userProfile.userBal == 0) {
+      embed.setTitle("Du bist pleite ... Geh anschaffen!");
       return interaction.reply({
-        content: "Du bist pleite ... Geh anschaffen!",
+        embeds: [embed],
         ephemeral: true,
       });
     }
 
     if (value > userProfile.userBal) {
+      embed.setTitle(
+        `Du hast nur ${userProfile.userBal} 💰... Geh anschaffen!`
+      );
       return interaction.reply({
-        content: `Du hast nur ${userProfile.userBal} 💰... Geh anschaffen!`,
+        embeds: [embed],
         ephemeral: true,
       });
     }
 
+    await interaction.deferReply();
+    embed.setTitle("Flip");
+    embed.setDescription("Flipping");
+    await interaction.editReply({ embeds: [embed] });
+    await wait(1000);
+    embed.setDescription("Flipping .");
+    await interaction.editReply({ embeds: [embed] });
+    await wait(1000);
+    embed.setDescription("Flipping ..");
+    await interaction.editReply({ embeds: [embed] });
+    await wait(1000);
+
     const win = Math.floor(Math.random() * 2);
     if (guess == win) {
       setBal(user, userProfile.userBal + value);
-      return interaction.reply({
-        content: `Du hast ${value} 💰 gewonnen und hast jetzt ${
+
+      embed.setDescription(
+        `**${user.username}** wettet auf einen **${flip(guess)}** roll!`
+      );
+      await interaction.editReply({ embeds: [embed] });
+      await wait(3000);
+      embed.setDescription(`**${flip(win)}** roll gewinnt!`);
+      await interaction.editReply({ embeds: [embed] });
+      await wait(3000);
+      embed.setDescription(
+        `Du hast ${value} 💰 **GEWONNEN** und hast jetzt **${
           userProfile.userBal + value
-        } 💰!`,
-      });
+        }** 💰!`
+      );
+      await interaction.editReply({ embeds: [embed] });
     } else {
       setBal(user, userProfile.userBal - value);
-      return interaction.reply({
-        content: `Du hast ${value} 💰 verloren und hast jetzt ${
+
+      embed.setDescription(
+        `**${user.username}** wettet auf einen **${flip(guess)}** roll!`
+      );
+      await interaction.editReply({ embeds: [embed] });
+      await wait(3000);
+      embed.setDescription(`**${flip(win)}** roll gewinnt!`);
+      await interaction.editReply({ embeds: [embed] });
+      await wait(3000);
+      embed.setDescription(
+        `Du hast ${value} 💰 **VERLOREN** und hast jetzt **${
           userProfile.userBal - value
-        } 💰!`,
-      });
+        }** 💰!`
+      );
+      await interaction.editReply({ embeds: [embed] });
     }
   },
 };

@@ -5,7 +5,7 @@ const userSchema = new Schema({
   userId: { type: String, required: true },
   userName: String,
   userLevel: { type: Number, default: 1 },
-  userBal: { type: Number, default: 50 },
+  userBal: { type: Number, default: 20000 },
   userXp: { type: Number, default: 0 },
   userTier: { type: Number, default: 1 },
 });
