@@ -90,7 +90,7 @@ module.exports = {
       components: [row0],
     });
 
-    await wait(6000);
+    await wait(60000);
 
     try {
       await interaction.deleteReply();
