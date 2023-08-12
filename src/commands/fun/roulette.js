@@ -143,9 +143,7 @@ module.exports = {
       embed.addFields([
         {
           name: `Tisch`,
-          value: `Multiplikator: *${multiplikator}x*\nFeld: **${tickToString(
-            win
-          )}**`,
+          value: `Multi: *${multiplikator}x*\nFeld: **${tickToString(win)}**`,
           inline: true,
         },
       ]);
@@ -173,9 +171,9 @@ module.exports = {
       embed.addFields([
         {
           name: `Tisch`,
-          value: `Multiplikator: *${winMultiplikator(
+          value: `Multi: *${winMultiplikator(win)}x*\nFeld: **${tickToString(
             win
-          )}x*\nFeld: **${tickToString(win)}**`,
+          )}**`,
           inline: true,
         },
       ]);
