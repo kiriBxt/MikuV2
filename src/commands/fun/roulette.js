@@ -67,7 +67,7 @@ module.exports = {
     .setDescription("Vergamble dein ganzes Geld!")
     .addStringOption((option) =>
       option
-        .setName("setz")
+        .setName("feld")
         .setDescription("Setze auf Rot oder Schwarz")
         .setRequired(true)
         .addChoices(
@@ -82,7 +82,7 @@ module.exports = {
   async execute(interaction) {
     const { options, user } = interaction;
     const bet = parseInt(options.getString("einsatz"));
-    const guess = options.getString("setz");
+    const guess = options.getString("feld");
 
     const userProfile = await getProfile(user);
 
