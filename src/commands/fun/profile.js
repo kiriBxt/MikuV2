@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const filledBar = require("./tools/filledBar");
-const { getProfile } = require("../../tools/economy");
+const { getProfile, currencyconverter } = require("../../tools/economy");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -56,7 +56,7 @@ module.exports = {
         },
         {
           name: `Bank`,
-          value: `${userProfile.userBal} 💰`,
+          value: `${currencyconverter(userProfile.userBal)}`,
           inline: true,
         },
         {

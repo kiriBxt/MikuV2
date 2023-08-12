@@ -12,7 +12,7 @@ const {
   tierInit,
   numToRole,
 } = require("./tools/enhanceTools.js");
-const { getProfile } = require("../../tools/economy.js");
+const { getProfile, currencyconverter } = require("../../tools/economy.js");
 const { getChance, getCost } = require("../../tools/enhance.js");
 
 module.exports = {
@@ -76,12 +76,12 @@ module.exports = {
         },
         {
           name: "Enhance Cost: ",
-          value: `${getCost(currTier)} 💰`,
+          value: `${currencyconverter(getCost(currTier))} `,
           inline: false,
         },
         {
           name: "Your balance: ",
-          value: `${userProfile.userBal} 💰`,
+          value: `${currencyconverter(userProfile.userBal)}`,
           inline: true,
         }
       );
@@ -90,10 +90,10 @@ module.exports = {
       components: [row0],
     });
 
-    await wait(600);
+    await wait(6000);
 
     try {
-      await interaction.message.deleteReply();
+      await interaction.deleteReply();
 
       if (isInArray(enhanceUserList, member.id)) {
         let index = enhanceUserList.indexOf(member.id);

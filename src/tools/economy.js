@@ -2,6 +2,13 @@ const User = require("../schemas/user");
 const Guild = require("../schemas/guild");
 const { mongoose } = require("mongoose");
 
+function currencyconverter(value) {
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+  }).format(value);
+}
+
 function randomIntFromInterval(min, max) {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -61,6 +68,11 @@ async function addBal(user, min, max) {
   userProfile.userBal = userProfile.userBal + randomIntFromInterval(min, max);
   await userProfile.save().catch(console.error);
 }
+async function addBalAmount(user, amount) {
+  let userProfile = await getProfile(user);
+  userProfile.userBal = userProfile.userBal + amount;
+  await userProfile.save().catch(console.error);
+}
 
 async function setBal(user, newBal) {
   await User.findOneAndUpdate({ userId: user.id }, { userBal: newBal });
@@ -81,4 +93,7 @@ module.exports = {
   addBal,
   setTier,
   getGuildProfile,
+  randomIntFromInterval,
+  addBalAmount,
+  currencyconverter,
 };

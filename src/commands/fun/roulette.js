@@ -1,5 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { getProfile, setBal } = require("../../tools/economy");
+const {
+  getProfile,
+  setBal,
+  currencyconverter,
+} = require("../../tools/economy");
 const wait = require("node:timers/promises").setTimeout;
 
 function tickToString(tick) {
@@ -47,7 +51,7 @@ function field() {
 }
 
 module.exports = {
-  cooldown: 1,
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("roulette")
     .setDescription("Vergamble dein ganzes Geld!")
@@ -92,7 +96,9 @@ module.exports = {
 
     if (bet > userProfile.userBal) {
       embed.setTitle(
-        `Du hast nur ${userProfile.userBal} 💰... Geh anschaffen!`
+        `Du hast nur ${currencyconverter(
+          userProfile.userBal
+        )}... Geh anschaffen!`
       );
       return interaction.reply({
         embeds: [embed],
@@ -121,7 +127,9 @@ module.exports = {
     embed.addFields([
       {
         name: `${user.username}`,
-        value: `Einsatz: *${bet}*\nFeld: **${tickToString(guess)}**`,
+        value: `Einsatz: *${currencyconverter(bet)}*\nFeld: **${tickToString(
+          guess
+        )}**`,
         inline: true,
       },
     ]);
@@ -147,7 +155,9 @@ module.exports = {
       embed.addFields([
         {
           name: `Spiel:`,
-          value: `Gewinn: *${winnings}*\nBank: **${newBal}**`,
+          value: `Gewinn: *${currencyconverter(
+            winnings
+          )}*\nBank: **${currencyconverter(newBal)}**`,
           inline: true,
         },
       ]);
@@ -175,7 +185,9 @@ module.exports = {
       embed.addFields([
         {
           name: `Spiel:`,
-          value: `Verlust: *${lose}*\nBank: **${newBal}**`,
+          value: `Verlust: *${currencyconverter(
+            lose
+          )}*\nBank: **${currencyconverter(newBal)}**`,
           inline: true,
         },
       ]);
