@@ -52,9 +52,9 @@ module.exports = {
       // embedFields[1].name = "Enhance Chance: ";
       embedFields[1].value = newChance + " %";
       // embedFields[2].name = "Enhance Cost: ";
-      embedFields[2].value = newCost + " 💰";
+      embedFields[2].value = newCost + " 💲";
       // embedFields[3].name = "your Balance ";
-      embedFields[3].value = currBal + " 💰";
+      embedFields[3].value = currBal + " 💲";
 
       const embed = new EmbedBuilder()
         .setTitle(embedTitle)

@@ -76,12 +76,12 @@ module.exports = {
         },
         {
           name: "Enhance Cost: ",
-          value: `${getCost(currTier)} `,
+          value: `${getCost(currTier)} 💲`,
           inline: false,
         },
         {
           name: "Your balance: ",
-          value: `${userProfile.userBal}`,
+          value: `${userProfile.userBal} 💲`,
           inline: true,
         }
       );
@@ -90,7 +90,7 @@ module.exports = {
       components: [row0],
     });
 
-    await wait(60000);
+    await wait(300000);
 
     try {
       await interaction.deleteReply();
