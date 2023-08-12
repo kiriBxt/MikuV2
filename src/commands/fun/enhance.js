@@ -12,7 +12,7 @@ const {
   tierInit,
   numToRole,
 } = require("./tools/enhanceTools.js");
-const { getProfile, currencyconverter } = require("../../tools/economy.js");
+const { getProfile } = require("../../tools/economy.js");
 const { getChance, getCost } = require("../../tools/enhance.js");
 
 module.exports = {
@@ -76,12 +76,12 @@ module.exports = {
         },
         {
           name: "Enhance Cost: ",
-          value: `${currencyconverter(getCost(currTier))} `,
+          value: `${getCost(currTier)} `,
           inline: false,
         },
         {
           name: "Your balance: ",
-          value: `${currencyconverter(userProfile.userBal)}`,
+          value: `${userProfile.userBal}`,
           inline: true,
         }
       );
