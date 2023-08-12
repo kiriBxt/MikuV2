@@ -18,7 +18,7 @@ module.exports = {
       randomUser = guild.members.cache.random().user.username;
     }
 
-    const cash = randomIntFromInterval(10, 200000);
+    const cash = randomIntFromInterval(10, 20000);
 
     const embed = new EmbedBuilder().setDescription(
       `**${

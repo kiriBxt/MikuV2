@@ -13,6 +13,16 @@ function tickToString(tick) {
   return;
 }
 
+function thumbnail(tick) {
+  if (tick == 2)
+    return "https://cdn.discordapp.com/attachments/1138984772576747581/1139723742747041892/greenm.png";
+  if (tick == 1)
+    return "https://cdn.discordapp.com/attachments/1138984772576747581/1139723743187439698/redm.png";
+  if (tick == 0)
+    return "https://cdn.discordapp.com/attachments/1138984772576747581/1139723743401361488/blackm.png";
+  return;
+}
+
 function image(tick) {
   if (tick == 2)
     return "https://cdn.discordapp.com/attachments/1138984772576747581/1139705897514442782/green.png";
@@ -112,21 +122,22 @@ module.exports = {
     embed.setImage(
       "https://cdn.discordapp.com/attachments/1138984772576747581/1139708366038511738/backhroundf.png"
     );
-    embed.setDescription("__**Ball rollt**__");
+    embed.setDescription("__**Kugel rollt**__");
     await interaction.editReply({ embeds: [embed] });
     await wait(500);
-    embed.setDescription("__**Ball rollt .**__");
+    embed.setDescription("__**Kugel rollt .**__");
     await interaction.editReply({ embeds: [embed] });
     await wait(500);
-    embed.setDescription("__**Ball rollt ..**__");
+    embed.setDescription("__**Kugel rollt ..**__");
     await interaction.editReply({ embeds: [embed] });
     await wait(500);
-    embed.setDescription("__**Ball rollt ...**__");
+    embed.setDescription("__**Kugel rollt ...**__");
     await interaction.editReply({ embeds: [embed] });
+    embed.setDescription("**Roulette**\n\u200B");
     await wait(500);
     embed.addFields([
       {
-        name: `${user.username}`,
+        name: `__**${user.username}**__`,
         value: `Einsatz: *${currencyconverter(bet)}*\nFeld: **${tickToString(
           guess
         )}**`,
@@ -142,17 +153,16 @@ module.exports = {
       let newBal = userProfile.userBal + winnings;
       embed.addFields([
         {
-          name: `Tisch`,
+          name: `__**Tisch**__`,
           value: `Multi: *${multiplikator}x*\nFeld: **${tickToString(win)}**`,
           inline: true,
         },
       ]);
       embed.setImage(image(win));
       await interaction.editReply({ embeds: [embed] });
-      embed.setDescription("__** Spieler Gewinnt **__");
       embed.addFields([
         {
-          name: `Spiel:`,
+          name: `__**Spiel**__`,
           value: `Gewinn: *${currencyconverter(
             winnings
           )}*\nBank: **${currencyconverter(newBal)}**`,
@@ -170,7 +180,7 @@ module.exports = {
       let newBal = userProfile.userBal - lose;
       embed.addFields([
         {
-          name: `Tisch`,
+          name: `__**Tisch**__`,
           value: `Multi: *${winMultiplikator(win)}x*\nFeld: **${tickToString(
             win
           )}**`,
@@ -179,10 +189,9 @@ module.exports = {
       ]);
       embed.setImage(image(win));
       await interaction.editReply({ embeds: [embed] });
-      embed.setDescription("__** Spieler Verliert **__");
       embed.addFields([
         {
-          name: `Spiel:`,
+          name: `__**Spiel**__`,
           value: `Verlust: *${currencyconverter(
             lose
           )}*\nBank: **${currencyconverter(newBal)}**`,
