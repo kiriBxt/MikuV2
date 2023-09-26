@@ -60,7 +60,6 @@ module.exports = {
         .setLabel("Queue")
     );
     await interaction.reply({
-      
       embeds: [embedAdded],
       components: [row0],
     });
