@@ -16,6 +16,7 @@
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
     "ffmpeg-static": "^5.1.0",
+    "mongodb": "^6.1.0",
     "mongoose": "^7.4.2",
     "shalk": "^0.0.1-security",
     "ytdl-core": "^4.11.4"
